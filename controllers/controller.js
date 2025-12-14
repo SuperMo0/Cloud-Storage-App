@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
 import queries from "../db/queries.js";
 import { name } from "ejs";
-import upload from "../lib/upload.js";
+import supbase from './../lib/supbase.js'
 
 
 
@@ -50,7 +50,8 @@ async function handleNewFolder(req, res) {
 
     if (!parent.trim()) parent = null;
 
-    // console.log(req.user);
+
+    console.log(folder_name);
 
     await queries.insertFile({
         name: folder_name,
@@ -59,7 +60,7 @@ async function handleNewFolder(req, res) {
         user_id: req.user.id,
         owner: req.user
     })
-    res.redirect('/');
+    res.redirect(req.originalUrl);
 }
 
 
@@ -69,10 +70,35 @@ async function handleViewFolder(req, res) {
     let content = await queries.getUserFilesById(req.user.id, folder_id);
     let folder = await queries.getFileById(folder_id, req.user.id);
     let parent = folder.parent_id;
-
-    // console.log(parent, "************");
     res.render('home', { content, parent });
 }
 
 
-export default { renderHome, renderLogin, renderSignup, handleNewUser, handleNewFolder, handleViewFolder };
+async function handleUploadFile(req, res) {
+
+    let path = req.body.path.split('/');
+    let parent = path[path.length - 1];
+
+    if (!parent.trim()) parent = null;
+
+    try {
+        let url = await supbase.uploadSingleFile(req.file);
+        let file = {};
+        file.name = req.file.originalname;
+        file.size = req.file.size;
+        file.link = url;
+        file.extension = req.file.mimetype;
+        file.user_id = req.user.id
+        file.parent_id = parent;
+        file.type = 'file';
+        await queries.insertFile(file)
+        res.send('ok');
+    }
+    catch (e) {
+        res.send('error uploading file');
+        return;
+    }
+}
+
+
+export default { renderHome, renderLogin, renderSignup, handleNewUser, handleNewFolder, handleViewFolder, handleUploadFile };

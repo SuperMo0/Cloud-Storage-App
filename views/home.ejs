@@ -33,7 +33,7 @@
             <div class="side-bar">
                 <div class="drop-down-wrapper">
                     <div class="new-folder-wrapper">
-                        <button class="new-file-button"> + New</button>
+                        <button class="new-file-button"> + New Folder</button>
                         <i class="fa-solid fa-angle-down"></i>
                     </div>
                     <form method="post" class="folder-name-input hide">
@@ -58,6 +58,11 @@
                     <p>Trash</p>
                 </div>
 
+                <div class="image-preview-container ">
+                    <img class="image-preview hide" src="" alt="">
+                    <video loop class="video-preview hide" src=""></video>
+                </div>
+
             </div>
 
             <div data-content="" class="main-content">
@@ -73,13 +78,15 @@
                     <div class="folders-container">
 
                         <% content.forEach(element=> { %>
-                            <div data-id='<%=element.id%>' class="folder-container">
-                                <i class="fa-solid fa-folder"></i>
-                                <p class="folder-name">
-                                    <%= element.name %>
-                                </p>
-                            </div>
-                            <% }) %>
+                            <% if (element.type=='folder' ) { %>
+                                <div data-id='<%=element.id%>' class="folder-container">
+                                    <i class="fa-solid fa-folder"></i>
+                                    <p class="folder-name">
+                                        <%= element.name %>
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <% }) %>
                     </div>
                 </div>
 
@@ -87,23 +94,37 @@
                     <p class="section-title">Files</p>
                     <div class="files-container">
 
+                        <% content.forEach(element=> { %>
 
-                        <!-- <div class="file-container">
-                            <i class="fa-regular fa-file-pdf"></i>
-                            <p class="folder-name">Meeting Notes.pdf</p>
-                            <p class="file-size"> 2.4M</p>
-                        </div>
+                            <% if (element.type!='folder' ) { %>
 
-                        <div class="file-container">
-                            <i class="fa-solid fa-photo-film"></i>
-                            <p class="folder-name">Final Logo</p>
-                            <p class="file-size"> 3.4M</p>
-                        </div>
-                        <div class="file-container">
-                            <i class="fa-regular fa-file-lines"></i>
-                            <p class="folder-name">Final Logo</p>
-                            <p class="file-size"> 3.4M</p>
-                        </div>-->
+                                <div data-name="<%= element.name %>" data-link="<%= element.link %>"
+                                    data-type="<%= element.extension %>" class="file-container">
+
+                                    <% if (element.extension.startsWith('image')||
+                                        element.extension.startsWith('video')) { %>
+                                        <i class="fa-solid fa-photo-film"></i>
+                                        <% } else if (element.extension=='application/pdf' ) { %>
+                                            <i class="fa-regular fa-file-pdf"></i>
+                                            <% } else { %>
+                                                <i class="fa-regular fa-file-lines"></i>
+                                                <% } %>
+
+                                                    <p class="folder-name">
+                                                        <%= element.name %>
+                                                    </p>
+                                                    <p class="file-size">
+                                                        <%= element.size/1000000 %>
+                                                            MB
+                                                    </p>
+                                </div>
+
+                                <% } %>
+
+
+                                    <% }) %>
+
+
 
                     </div>
                 </div>
@@ -114,7 +135,7 @@
                 <label class="upload-area" for="file">
                     <div class="upload-wrapper">
                         <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                        <p>Choose Files to uplad or Drag & drop here </p>
+                        <p>Choose Files to upload</p>
                         <p class="file-name"></p>
                         <input class="file" type="file" name="file" id="file">
                         <progress class="progress-bar hide" max="100" value="0"></progress>

@@ -20,7 +20,7 @@ model Users {
 
 model files {
   id        String  @id @default(dbgenerated("gen_random_uuid()"))
-  parent_id String? @unique
+  parent_id String?
   parent    files?  @relation("file_parent", fields: [parent_id], references: [id])
   childrens files[] @relation("file_parent")
   name      String

@@ -11,6 +11,9 @@ async function insertUser(user) {
 }
 
 async function insertFile(file) {
+
+    console.log(file.parent_id);
+
     prismaClient.files.create({
         data: {
             name: file.name,
@@ -22,21 +25,10 @@ async function insertFile(file) {
             usersId: file.user_id,
         }
     }).catch((err) => {
-        console.error(err);
-        /*throw "err while creating file";*/
+        console.log('err');
     })
 
 }
-
-/*async function getUserFiles(user) {
-    let result = await prismaClient.files.findMany({
-        where: { id: user.id }
-    }).catch(err)
-    {
-        throw "err while creating file";
-    }
-    return result;
-}*/
 
 async function checkIfUserExist(email) {
     const res = await prismaClient.users.findFirst({
