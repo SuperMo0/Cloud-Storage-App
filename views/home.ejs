@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/normalize.css">
-    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/all.min.css">
     <link rel="stylesheet" href="/css/regular.min.css">
-    <script src="/homeScript.js" defer></script>
+    <script src="/js/homeScript.js" defer></script>
     <title>Safe</title>
 </head>
 
@@ -18,7 +18,7 @@
         <header class="header-wrapper">
 
             <div class="logo-wrapper">
-                <img class="logo" src="/logo.png" alt="">
+                <img class="logo" src="/images/logo.png" alt="">
                 <h1 class="logo-name">Safe Home Page</h1>
             </div>
 
@@ -31,14 +31,17 @@
         <section class="main">
 
             <div class="side-bar">
-                <div class="drop-down-wrapper">
-                    <div class="new-folder-wrapper">
-                        <button class="new-file-button"> + New Folder</button>
+
+
+                <div class="dropdown-wrapper">
+                    <div class="new-folder-dropdown">
+                        <button class="new-folder-dropdown-button"> + New Folder</button>
                         <i class="fa-solid fa-angle-down"></i>
                     </div>
-                    <form method="post" class="folder-name-input hide">
-                        <input type="text" name="folder_name" id="folder_name" placeholder="NewFolder">
-                        <button type="submit" class="create-folder-button"> create</button>
+                    <form method="post" action="/home/folder" class="new-folder-form hide">
+                        <input type="text" name="name" id="name" placeholder="NewFolder" required>
+                        <input style="width: 0; height: 0;" type="text" name="location" id="location" value="0">
+                        <button type="submit" class="post-new-folder-button"> create</button>
                     </form>
                 </div>
 
@@ -67,10 +70,11 @@
 
             </div>
 
-            <div data-content="" class="main-content">
+            <div data-currentLocation="<%= currentLocation %>" data-folders="<%=folders %>" data-files="<%= files %>"
+                class="main-content">
                 <div class="path-info-container">
                     <p class="path">My Drive ></p>
-                    <div data-id="<%= parent %>" class="go-back">
+                    <div class="go-back">
                         <i class="fa-solid fa-chevron-left"></i>
                     </div>
                 </div>
@@ -79,53 +83,40 @@
                     <p class="section-title">Folders</p>
                     <div class="folders-container">
 
-                        <% content.forEach(element=> { %>
-                            <% if (element.type=='folder' ) { %>
-                                <div data-id='<%=element.id%>' class="folder-container">
-                                    <i class="fa-solid fa-folder"></i>
-                                    <p class="folder-name">
-                                        <%= element.name %>
-                                    </p>
-                                </div>
-                                <% } %>
-                                    <% }) %>
+                        <div data-id='element.id' class="folder-container hide">
+                            <i class="fa-solid fa-folder"></i>
+                            <p class="folder-name">ssdfsd</p>
+                        </div>
+
                     </div>
                 </div>
+
 
                 <div class="files-section-container">
                     <p class="section-title">Files</p>
                     <div class="files-container">
 
-                        <% content.forEach(element=> { %>
 
-                            <% if (element.type!='folder' ) { %>
+                        <div class="file-container media hide">
+                            <i class="fa-solid fa-photo-film"></i>
+                            <p class="file-name"></p>
+                            <p class="file-size"></p>
+                            <p class="file-creation-time"></p>
+                        </div>
 
-                                <div data-name="<%= element.name %>" data-link="<%= element.link %>"
-                                    data-type="<%= element.extension %>" class="file-container">
+                        <div class="file-container pdf hide">
+                            <i class="fa-regular fa-file-pdf pdf-file"></i>
+                            <p class="file-name"></p>
+                            <p class="file-size"></p>
+                            <p class="file-creation-time"></p>
+                        </div>
 
-                                    <% if (element.extension.startsWith('image')||
-                                        element.extension.startsWith('video')) { %>
-                                        <i class="fa-solid fa-photo-film"></i>
-                                        <% } else if (element.extension=='application/pdf' ) { %>
-                                            <i class="fa-regular fa-file-pdf"></i>
-                                            <% } else { %>
-                                                <i class="fa-regular fa-file-lines"></i>
-                                                <% } %>
-
-                                                    <p class="folder-name">
-                                                        <%= element.name %>
-                                                    </p>
-                                                    <p class="file-size">
-                                                        <%= element.size/1000000 %>
-                                                            MB
-                                                    </p>
-                                </div>
-
-                                <% } %>
-
-
-                                    <% }) %>
-
+                        <div class="file-container general hide">
+                            <i class="fa-regular fa-file-lines general-file"></i>
+                            <p class="file-name"></p>
+                            <p class="file-size"></p>
+                            <p class="file-creation-time"></p>
+                        </div>
 
 
                     </div>

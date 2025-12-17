@@ -2,50 +2,51 @@ import queries from "../db/queries.js";
 import supbase from '../lib/supbase.js'
 
 
-export function handleAuthorization(req, res) {
+export function handleAuthorization(req, res, next) {
     if (!req.user) return res.redirect('/login');
     next();
 }
 
 export async function renderHome(req, res) {
 
+    let currentLocation = req.session.location || '0';
+    req.session.location = null;
+
     try {
-        const folders = await queries.getAllUserFolders();
+        let folders = await queries.getAllUserFolders();
+        folders = JSON.stringify(folders);
 
-        const files = await queries.getAllUserFiles();
+        let files = await queries.getAllUserFiles();
+        files = JSON.stringify(files);
 
-        res.render('home', { folders, files });
+        res.render('home', { folders, files, currentLocation });
     } catch (error) {
-
         next(error);
     }
 
 }
 
+export async function handleNewFolder(req, res, next) {
 
+    let folder_name = req.body.name;
+    let location = req.body.location;
+    try {
+        await queries.insertFolder({
+            name: folder_name,
+            parent_id: location,
+            user_id: req.user.id,
+        })
 
-/*export async function handleNewFolder(req, res) {
-    let path = req.url.split('/');
-    let parent = path[path.length - 1];
-    let folder_name = req.body.folder_name;
+    } catch (error) {
+        return next(error)
+    }
 
-    if (!parent.trim()) parent = null;
-
-
-    console.log(folder_name);
-
-    await queries.insertFile({
-        name: folder_name,
-        type: 'folder',
-        parent_id: parent,
-        user_id: req.user.id,
-        owner: req.user
-    })
-    res.redirect(req.originalUrl);
+    req.session.location = location;
+    res.redirect('/home');
 }
 
 
-export async function handleViewFolder(req, res) {
+/*export async function handleViewFolder(req, res) {
     let folder_id = req.params.id;
     let content = await queries.getUserFilesById(req.user.id, folder_id);
     let folder = await queries.getFileById(folder_id, req.user.id);
@@ -53,12 +54,12 @@ export async function handleViewFolder(req, res) {
     res.render('home', { content, parent });
 }
 
+*/
 
 
 
 
-
-export async function handleUploadFile(req, res) {
+/*export async function handleUploadFile(req, res) {
 
     let path = req.body.path.split('/');
     let parent = path[path.length - 1];

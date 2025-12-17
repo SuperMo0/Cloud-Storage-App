@@ -34,11 +34,10 @@ app.use('/home', homeRouter)
 // app.post('/upload', upload.single('file'), controller.handleUploadFile);
 
 
-// app.post('/{*splat}', express.urlencoded({ extended: false }), controller.handleNewFolder);
 
+/*app.use((error, req, res, next) => {
 
-app.use((error, req, res, next) => {
-    res.render('error');
-})
+    res.render('error', { error });
+})*/
 
 app.listen(3000);

@@ -12,7 +12,7 @@ export function renderSignup(req, res) {
     res.render('signup', { messages });
 }
 
-export async function handleNewUser(req, res) {
+export async function handleNewUser(req, res, next) {
 
     let validationMessages = check(req);
 
@@ -25,6 +25,7 @@ export async function handleNewUser(req, res) {
     user.password = bcrypt.hashSync(user.password, 10);
     try {
         user = await queries.insertUser(user);
+        await queries.createRootFolder(user.id);
         req.login(user, (e) => {
             if (e) throw e;
             res.redirect('/home');

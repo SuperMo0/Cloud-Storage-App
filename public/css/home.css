@@ -69,7 +69,7 @@
     gap: 15px;
 }
 
-.new-folder-wrapper {
+.new-folder-dropdown {
     border: 1px solid var(--main-blue);
     align-items: center;
     display: flex;
@@ -77,9 +77,9 @@
     position: relative;
 }
 
-.new-file-button {
+.new-folder-dropdown-button {
     color: #60aaff;
-    font-size: var(--xxl);
+    font-size: var(--xl);
     padding-block: 5px;
     cursor: pointer;
     width: 85%;
@@ -91,17 +91,28 @@
     border-left: 1px solid var(--main-blue);
 }
 
-#folder_name {
-    font-size: var(--xl);
+#name {
+    width: 98%;
+    display: block;
+    font-size: var(--l);
+    border-radius: 5px;
+    padding-left: 10px;
+    padding: 5px;
+    border: 1px solid var(--main-blue);
 }
 
-.create-folder-button {
+.post-new-folder-button {
     font-size: var(--med);
     padding: 5px;
+    border-radius: 5px;
+    border: 1px solid var(--main-blue);
+    cursor: pointer;
+
 }
 
-.folder-name-input {
-    background-color: var(--main-blue);
+.new-folder-form {
+    /* background-color: var(--main-blue); */
+    border: 1px solid var(--main-blue);
     padding-block: 15px;
     display: flex;
     flex-direction: column;
@@ -168,6 +179,14 @@
 .folders-container {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+}
+
+.files-container
+{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .section-title {

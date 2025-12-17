@@ -16,6 +16,40 @@ async function insertUser(user) {
     }
 }
 
+async function insertFolder(folder) {
+
+    try {
+        await prismaClient.folders.create({
+            data: {
+                name: folder.name,
+                parent_id: folder.parent_id,
+                usersId: folder.user_id,
+            }
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
+async function createRootFolder(user_id) {
+
+    try {
+        await prismaClient.folders.create({
+            data: {
+                id: "0",
+                name: "root",
+                parent_id: '0',
+                usersId: user_id,
+            }
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
+
+
+
 /*async function insertFile(file) {
 
     prismaClient.files.create({
@@ -45,14 +79,23 @@ async function checkIfUserExist(email) {
 }
 
 
-/*async function getUserByid(id) {
+async function getUserByid(id) {
     const res = await prismaClient.users.findFirst({
         where: {
             id: id
         }
     })
     return res;
-}*/
+}
+
+async function getUserByEmail(email) {
+    const res = await prismaClient.users.findFirst({
+        where: {
+            email: email
+        }
+    })
+    return res;
+}
 
 /*async function getUserFilesById(id, parent) {
     const res = await prismaClient.files.findMany({
@@ -103,4 +146,4 @@ async function getAllUserFiles(id) {
 }*/
 
 
-export default { insertUser, checkIfUserExist, getAllUserFiles, getAllUserFolders }
+export default { insertUser, checkIfUserExist, getAllUserFiles, getAllUserFolders, getUserByid, insertFolder, createRootFolder, getUserByEmail }
