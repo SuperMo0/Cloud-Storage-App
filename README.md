@@ -10,7 +10,6 @@
 ![ALT TEXT](./project-images/image1.png)
 ![ALT TEXT](./project-images/image2.png)
 ![ALT TEXT](./project-images/image3.png)
-![ALT TEXT](./project-images/image4.png)
 
 A secure, efficient file storage and sharing application built with Node.js. It features time-limited file sharing, folder management, and real-time upload tracking using standard web technologies.
 
