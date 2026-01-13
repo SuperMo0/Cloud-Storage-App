@@ -4,11 +4,12 @@
     position: relative;
     overflow-y: auto;
     flex: 1;
+    border: 1px solid black;
 }
 
 body {
-    max-height: 100vh;
-    height: 100vh;
+    max-height: 100dvh;
+    height: 100dvh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -164,12 +165,12 @@ body {
 /*-----------------------------------------End of left side bar styles-----------------*/
 
 
-
-
 /*-----------------------------------------Start of Files Explorer styles-----------------*/
 
 .main-content {
     width: 100%;
+    overflow-y: scroll;
+    scrollbar-width: thin;
 }
 
 .path-info-container {
