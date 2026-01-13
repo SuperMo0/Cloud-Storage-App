@@ -5,11 +5,10 @@
   "description": "File Uploader",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "npx prisma migrate dev --name Safe ",
     "generate": "npx prisma generate",
     "start": "node index.js",
-    "postinstall": "npx prisma generate",
+    "postinstall": "npx prisma migrate deploy && npx prisma generate",
     "dev": "NODE_ENV=development node --watch index.js"
   },
   "author": "",
